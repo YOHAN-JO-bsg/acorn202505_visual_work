@@ -27,9 +27,12 @@
 
         //이미지 파일을 선택했을때 실행할 함수 등록
         document.querySelector("#fileInput").addEventListener("change", (e)=>{
+            // e 는 발생한 이벤트에 대한 정보를 담고 있는 event object
+            // e.target 에는 "change" 이벤트가 발생한 바로 그요소(input 요소)의 참조값이 들어 있다.
+            // e.target.files 는 선택된 파일 객체가 들어 있는 파일 배열이다.
             const files = e.target.files;
             // Promise 객체를 리턴해주는 readFile() 함수를 호출하면서 file 객체 전달
-            readFile(files[0])
+            readFile(files[0]) // promise type 이 리턴된다.
             .then(data=>{
                 //data 는 읽은 이미지의 DataURL 이다
                 const img=`<img src="${data}">`;
@@ -40,7 +43,13 @@
             .then(data=>{
                 const img=`<img src="${data}">`;
                 document.querySelector("#preview").insertAdjacentHTML("beforeend", img);
-            });
+            })
+            
+            // 여기! .then() 체인의 마지막에 바로 붙여야 합니다.
+            .catch(err => { // <-- 화살표 함수 문법을 올바르게 수정
+                // 여기는 promise 가 reject 되거나 error 가 발생하면 실행되는 영역
+                console.log(err);    
+            }); // <-- .then() 체인의 끝에 세미콜론이 오지 않도록 주의 (체이닝의 일부)
         });
     </script>
 </body>
